@@ -11,7 +11,7 @@ require 'mina/rvm'    # for rvm support. (https://rvm.io)
 
 set :application_name, 'homepage'
 set :domain, 'daviddickmeyer.com'
-set :deploy_to, '/var/www/daviddickmeyer.com'
+set :deploy_to, '/home/ddm/homepage'
 set :repository, 'git@github.com:D-D-M/homepage.git'
 set :branch, 'master'
 
@@ -34,7 +34,7 @@ task :remote_environment do
   # invoke :'rbenv:load'
 
   # For those using RVM, use this to load an RVM version@gemset.
-  invoke :'rvm:use', 'ruby-2.4.1-p111@default'
+  invoke :'rvm:use', 'ruby-2.4.1'
 end
 
 # Put any custom commands you need to run at setup
@@ -53,9 +53,8 @@ task :deploy do
     comment "Deploying #{fetch(:application_name)} to #{fetch(:domain)}:#{fetch(:deploy_to)}"
     invoke :'git:clone'
     invoke :'deploy:link_shared_paths'
-    invoke :'rvm:load_env_vars'
     invoke :'bundle:install'
-    invoke :'rails:db_migrate'
+    invoke :'rails:db_migrate:RAILS_ENV=production'
     invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
 
@@ -64,7 +63,7 @@ task :deploy do
         command %{mkdir -p tmp/}
         command %{touch tmp/restart.txt}
       end
-      invoke :'puma:phased_restart'
+      # invoke :'puma:phased_restart'
     end
   end
 
