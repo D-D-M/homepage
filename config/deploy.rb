@@ -50,8 +50,10 @@ task :deploy do
   deploy do
     # Put things that will set up an empty directory into a fully set-up
     # instance of your project.
+    comment "Deploying #{fetch(:application_name)} to #{fetch(:domain)}:#{fetch(:deploy_to)}"
     invoke :'git:clone'
     invoke :'deploy:link_shared_paths'
+    invoke :'rvm:load_env_vars'
     invoke :'bundle:install'
     invoke :'rails:db_migrate'
     invoke :'rails:assets_precompile'
@@ -62,6 +64,7 @@ task :deploy do
         command %{mkdir -p tmp/}
         command %{touch tmp/restart.txt}
       end
+      invoke :'puma:phased_restart'
     end
   end
 
