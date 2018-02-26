@@ -6,17 +6,17 @@
 #
 environment "production"
 
-bind "unix:///home/ddm/homepage/shared/tmp/sockets/puma.sock"
-pidfile "/home/ddm/homepage/shared/tmp/pids/puma.pid"
-state_path "/home/ddm/homepage/shared/tmp/sockets/puma.state"
-directory "/home/ddm/homepage/current"
+bind "unix:///home/ddm/homepage/app/shared/tmp/sockets/puma.sock"
+pidfile "/home/ddm/homepage/app/shared/tmp/pids/puma.pid"
+state_path "/home/ddm/homepage/app/shared/tmp/sockets/puma.state"
+directory "/home/ddm/homepage/app/current"
 
 workers 2
 threads 1, 2
 
 daemonize true
 
-activate_control_app "unix:///home/ddm/homepage/shared/tmp/sockets/pumactl.sock"
+activate_control_app "unix:///home/ddm/homepage/app/shared/tmp/sockets/pumactl.sock"
 
 prune_bundler
 
