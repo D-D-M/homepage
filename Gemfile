@@ -27,7 +27,7 @@ gem 'jbuilder', '~> 2.5'
 # gem 'bcrypt', '~> 3.1.7'
 
 # Use mina and mina-puma for deployment
-gem 'mina', require: false
+gem 'mina', '1.2.2', require: false
 gem 'mina-puma', require: false, github: 'untitledkingdom/mina-puma'
 
 group :production do
