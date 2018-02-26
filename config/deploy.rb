@@ -11,12 +11,12 @@ require 'mina/rvm'    # for rvm support. (https://rvm.io)
 
 set :application_name, 'homepage'
 set :domain, 'daviddickmeyer.com'
-set :deploy_to, '/home/ddm/homepage'
+set :user, 'ddm' 
+set :deploy_to, "/home/#{fetch(:user)}/app"
 set :repository, 'git@github.com:D-D-M/homepage.git'
 set :branch, 'master'
 
 # Optional settings:
-set :user, 'ddm'          # Username in the server to SSH to.
 #   set :port, '30000'           # SSH port number.
 #   set :forward_agent, true     # SSH forward_agent.
 
@@ -41,6 +41,27 @@ end
 # All paths in `shared_dirs` and `shared_paths` will be created on their own.
 task :setup do
   # command %{rbenv install 2.3.0 --skip-existing}
+  in_path(fetch(:shared_path)) do
+
+    command %[mkdir -p config]
+
+    # Create database.yml for Postgres if it doesn't exist
+    path_database_yml = "config/database.yml"
+    database_yml = %[production:
+      database: homepage
+      adapter: postgresql
+      pool: 5
+      timeout: 5000]
+    command %[test -e #{path_database_yml} || echo "#{database_yml}" > #{path_database_yml}]
+
+    # Create secrets.yml if it doesn't exist
+    path_secrets_yml = "config/secrets.yml"
+    secrets_yml = %[production:\n  secret_key_base:\n    #{`bundle exec rake secret`.strip}]
+    command %[test -e #{path_secrets_yml} || echo "#{secrets_yml}" > #{path_secrets_yml}]
+
+    # Remove others-permission for config directory
+    command %[chmod -R o-rwx config]
+  end
 end
 
 desc "Deploys the current version to the server."
