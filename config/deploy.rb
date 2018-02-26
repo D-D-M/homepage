@@ -12,7 +12,7 @@ require 'mina/rvm'    # for rvm support. (https://rvm.io)
 set :application_name, 'homepage'
 set :domain, 'daviddickmeyer.com'
 set :user, 'ddm' 
-set :deploy_to, "/home/#{fetch(:user)}/app"
+set :deploy_to, "/home/#{fetch(:user)}/#{fetch(:application_name)}/app"
 set :repository, 'git@github.com:D-D-M/homepage.git'
 set :branch, 'master'
 
