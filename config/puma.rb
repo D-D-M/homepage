@@ -7,8 +7,8 @@
 environment "production"
 
 bind "unix:///home/ddm/homepage/app/shared/tmp/sockets/puma.sock"
-pidfile "/home/ddm/homepage/app/shared/tmp/pids/puma.pid"
-state_path "/home/ddm/homepage/app/shared/tmp/sockets/puma.state"
+pidfile "/home/ddm/homepage/app/shared/shared/tmp/pids/puma.pid"
+state_path "/home/ddm/homepage/app/shared/shared/tmp/sockets/puma.state"
 directory "/home/ddm/homepage/app/current"
 
 workers 2
